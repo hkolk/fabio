@@ -180,7 +180,7 @@ func TestAddHeaders(t *testing.T) {
 			config.Proxy{InfoHeaderPrefix: "X-Fabio"},
 			http.Header{
 				"Forwarded":           []string{"for=1.2.3.4; proto=https"},
-				"X-Fabio-Tls-Version": []string{"VersionTLS10"},
+				"X-Fabio-Tls-Version": []string{"TLS10"},
 				"X-Fabio-Tls-Cipher":  []string{"0xcca9"},
 				"X-Forwarded-Proto":   []string{"https"},
 				"X-Forwarded-Port":    []string{"443"},

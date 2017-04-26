@@ -131,9 +131,9 @@ func tlsVersion(r *http.Request) string {
 		return ""
 	}
 	switch r.TLS.Version {
-		case tls.VersionTLS10: return "VersionTLS10"
-		case tls.VersionTLS11: return "VersionTLS11"
-		case tls.VersionTLS12: return "VersionTLS12"
+		case tls.VersionTLS10: return "TLS10"
+		case tls.VersionTLS11: return "TLS11"
+		case tls.VersionTLS12: return "TLS12"
 		default: return "Unknown version: "+fmt.Sprintf("0x%x", int(r.TLS.Version))
 	}
 }
