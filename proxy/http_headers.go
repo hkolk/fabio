@@ -5,6 +5,8 @@ import (
 	"net"
 	"net/http"
 	"strings"
+	"crypto/tls"
+	"fmt"
 
 	"github.com/fabiolb/fabio/config"
 )
@@ -78,6 +80,13 @@ func addHeaders(r *http.Request, cfg config.Proxy) error {
 			r.Header.Del(cfg.TLSHeader)
 		}
 	}
+	if cfg.InfoHeaderPrefix != "" {
+		if r.TLS != nil {
+			r.Header.Set(cfg.InfoHeaderPrefix+"-Tls-Version", tlsVersion(r))
+			r.Header.Set(cfg.InfoHeaderPrefix+"-Tls-Cipher", tlsCipher(r))
+		}
+		r.Header.Set(cfg.InfoHeaderPrefix+"-Proto", r.Proto)
+	}
 
 	return nil
 }
@@ -108,4 +117,23 @@ func localPort(r *http.Request) string {
 		return "443"
 	}
 	return "80"
+}
+
+func tlsCipher(r *http.Request) string {
+	if r == nil || r.TLS == nil {
+		return ""
+	}
+	return fmt.Sprintf("0x%x", int(r.TLS.CipherSuite))
+}
+
+func tlsVersion(r *http.Request) string {
+	if r == nil || r.TLS == nil {
+		return ""
+	}
+	switch r.TLS.Version {
+		case tls.VersionTLS10: return "VersionTLS10"
+		case tls.VersionTLS11: return "VersionTLS11"
+		case tls.VersionTLS12: return "VersionTLS12"
+		default: return "Unknown version: "+fmt.Sprintf("0x%x", int(r.TLS.Version))
+	}
 }
