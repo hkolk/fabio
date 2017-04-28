@@ -119,11 +119,14 @@ func localPort(r *http.Request) string {
 	return "80"
 }
 
+// List of ciphers available here: 
+// https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml
+// https://golang.org/src/crypto/tls/cipher_suites.go#L368
 func tlsCipher(r *http.Request) string {
 	if r == nil || r.TLS == nil {
 		return ""
 	}
-	return fmt.Sprintf("0x%x", int(r.TLS.CipherSuite))
+	return fmt.Sprintf("0x%x", r.TLS.CipherSuite)
 }
 
 func tlsVersion(r *http.Request) string {
@@ -134,6 +137,6 @@ func tlsVersion(r *http.Request) string {
 		case tls.VersionTLS10: return "TLS10"
 		case tls.VersionTLS11: return "TLS11"
 		case tls.VersionTLS12: return "TLS12"
-		default: return "Unknown version: "+fmt.Sprintf("0x%x", int(r.TLS.Version))
+		default: return "Unknown version: "+fmt.Sprintf("0x%x", r.TLS.Version)
 	}
 }
