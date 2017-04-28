@@ -56,6 +56,7 @@ type Proxy struct {
 	ClientIPHeader        string
 	TLSHeader             string
 	TLSHeaderValue        string
+	InfoHeaderPrefix      string
 	GZIPContentTypes      *regexp.Regexp
 }
 
